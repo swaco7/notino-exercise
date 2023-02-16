@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.NotinoTest" parent="android:Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+    <style name="RatingBar" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorControlNormal">@color/gray_light</item>
+        <item name="android:colorControlActivated">@color/gray_dark</item>
+    </style>
+</resources>

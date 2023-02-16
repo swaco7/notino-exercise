@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NotinoTest</string>
+    <string name="products_title">Produkty</string>
+    <string name="to_cart">Do košíku</string>
+</resources>
