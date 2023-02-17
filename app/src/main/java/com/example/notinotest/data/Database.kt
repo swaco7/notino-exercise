@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.notinotest.Config
 
-@androidx.room.Database(entities = [ProductId::class], version = 1)
+@androidx.room.Database(entities = [ProductId::class, ProductIdCart::class], version = 2)
 abstract class Database : RoomDatabase() {
     abstract fun productDao(): ProductDao
 

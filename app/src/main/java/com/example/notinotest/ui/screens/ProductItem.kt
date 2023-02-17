@@ -5,11 +5,13 @@ import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.widget.RatingBar
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,16 +28,22 @@ import com.example.notinotest.Config
 import com.example.notinotest.R
 import com.example.notinotest.data.ProductById
 import com.example.notinotest.data.ProductId
+import com.example.notinotest.data.ProductIdCart
+import com.example.notinotest.ui.theme.InkTertiary
 
 @Composable
 fun ProductItem(
     product: ProductById,
     addToFavorites: (Int) -> Unit,
     removeFromFavorites: (Int) -> Unit,
-    currentFavorites: List<ProductId>
+    addToCart: (Int) -> Unit,
+    removeFromCart: (Int) -> Unit,
+    currentFavorites: List<ProductId>,
+    currentCart: List<ProductIdCart>
 ){
     val isDark = isSystemInDarkTheme()
     val isFavorite = currentFavorites.find { it.id == product.productId } != null
+    val isInCart = currentCart.find { it.id == product.productId } != null
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,14 +54,8 @@ fun ProductItem(
                 .align(Alignment.End)
                 .height(48.dp)
                 .width(48.dp)
-                .clickable {
-                    if (!isFavorite) {
-                        addToFavorites(product.productId)
-                    } else {
-                        removeFromFavorites(product.productId)
-                    }
-                }
         ) {
+            val interactionSource = remember { MutableInteractionSource() }
             Image(
                 painter = if (!isFavorite) {
                     painterResource(id = R.drawable.heart)
@@ -61,7 +63,18 @@ fun ProductItem(
                     painterResource(id = R.drawable.heart_filled)
                 },
                 contentDescription = "",
-                modifier = Modifier.align(Alignment.Center)
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .clickable(
+                        interactionSource = interactionSource,
+                        indication = null
+                    ) {
+                        if (!isFavorite) {
+                            addToFavorites(product.productId)
+                        } else {
+                            removeFromFavorites(product.productId)
+                        }
+                    }
             )
         }
         AsyncImage(
@@ -131,12 +144,18 @@ fun ProductItem(
             )
             .height(36.dp)
             .align(Alignment.CenterHorizontally)
-            .clickable { }
+            .clickable {
+                if (!isInCart) {
+                    addToCart(product.productId)
+                } else {
+                    removeFromCart(product.productId)
+                }
+            }
         ) {
             Text(
-                text = stringResource(R.string.to_cart),
+                text = if (!isInCart) stringResource(R.string.to_cart) else stringResource(R.string.in_cart),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.h4,
+                style = if (!isInCart) MaterialTheme.typography.h4 else MaterialTheme.typography.h4.copy(color = InkTertiary),
                 modifier = Modifier
                     .padding(vertical = 8.dp, horizontal = 12.dp)
             )

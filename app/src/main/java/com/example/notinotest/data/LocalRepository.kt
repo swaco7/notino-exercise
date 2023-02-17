@@ -10,6 +10,7 @@ class LocalRepository @Inject constructor(
     private val productDao: ProductDao
 ) {
     val allFavorites: Flow<MutableList<ProductId>> = productDao.getAll()
+    val allCart: Flow<MutableList<ProductIdCart>> = productDao.getAllCart()
 
     @WorkerThread
     suspend fun deleteFavorite(productId: ProductId) {
@@ -19,6 +20,16 @@ class LocalRepository @Inject constructor(
     @WorkerThread
     suspend fun insertFavorite(productId: ProductId) {
         productDao.insertToFavorites(productId)
+    }
+
+    @WorkerThread
+    suspend fun deleteFromCart(productId: ProductIdCart) {
+        productDao.deleteFromCart(productId)
+    }
+
+    @WorkerThread
+    suspend fun insertToCart(productId: ProductIdCart) {
+        productDao.insertToCart(productId)
     }
 
     companion object {
