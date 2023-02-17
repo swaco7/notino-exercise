@@ -1,13 +1,13 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import com.google.gson.annotations.SerializedName
 
 data class Products(
     @SerializedName("vpProductByIds")
-    val vpProductByIds: List<VpProductById>
+    val vpProductByIds: List<ProductById>
 )
 
-data class VpProductById(
+data class ProductById(
     @SerializedName("productId")
     val productId: Int,
     @SerializedName("brand")

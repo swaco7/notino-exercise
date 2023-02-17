@@ -3,14 +3,14 @@ package com.example.notinotest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.notinotest.ui.AppContainer
 import com.example.notinotest.ui.theme.NotinoTestTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,7 +19,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotinoTestTheme {
-                // A surface container using the 'background' color from the theme
+                val systemUiController = rememberSystemUiController()
+                systemUiController.setStatusBarColor(
+                    color = if (isSystemInDarkTheme()) { Color.Black } else Color.White,
+                    darkIcons = !isSystemInDarkTheme()
+                )
                AppContainer()
             }
         }

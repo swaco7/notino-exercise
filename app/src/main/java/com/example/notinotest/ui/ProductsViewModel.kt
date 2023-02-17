@@ -1,10 +1,14 @@
-package com.example.notinotest
+package com.example.notinotest.ui
 
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.notinotest.data.LocalRepository
+import com.example.notinotest.data.ProductId
+import com.example.notinotest.data.Products
+import com.example.notinotest.data.RemoteRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -29,12 +33,10 @@ class ProductsViewModel @Inject internal constructor(
 
     init {
         Log.e("init", "viewModel")
-        viewModelScope.launch {
-            getProducts()
-        }
+        getProducts()
     }
 
-    suspend fun getProducts() {
+    private fun getProducts() {
         _uiState.value = LoadingState.Loading
         viewModelScope.launch {
             try {

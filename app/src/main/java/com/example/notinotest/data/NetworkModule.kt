@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import android.util.Log
 import com.example.notinotest.Config.baseUrl
@@ -13,7 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
+class NetworkModule {
     private val client = OkHttpClient
         .Builder()
         .addInterceptor { chain ->

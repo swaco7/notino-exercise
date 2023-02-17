@@ -1,20 +1,15 @@
-package com.example.notinotest
+package com.example.notinotest.ui.screens
 
-import android.util.Log
+import android.graphics.PorterDuff
+import android.graphics.drawable.LayerDrawable
 import android.view.LayoutInflater
 import android.widget.RatingBar
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,66 +20,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.notinotest.ui.theme.Teal200
-
-@Composable
-fun ProductList(
-    viewModel: ProductsViewModel
-) {
-    val favorites by viewModel.favorites.observeAsState(initial = emptyList())
-    Column {
-        when (val state = viewModel.uiState.collectAsState().value) {
-            is ProductsViewModel.LoadingState.Loaded
-            -> ProductsLoaded(
-                data = state.data,
-                addToFavorites = { viewModel.addToFavorites(it) },
-                removeFromFavorites = { viewModel.removeFromFavorites(it) },
-                favorites = favorites,
-            )
-            is ProductsViewModel.LoadingState.Loading -> Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
-            }
-            is ProductsViewModel.LoadingState.Error -> {}
-            else -> {}
-        }
-
-
-    }
-}
-
-@Composable
-fun ProductsLoaded(
-    data: Products,
-    addToFavorites: (Int) -> Unit,
-    removeFromFavorites: (Int) -> Unit,
-    favorites: List<ProductId>
-){
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        verticalArrangement = Arrangement.spacedBy(20.dp),
-        horizontalArrangement = Arrangement.spacedBy(20.dp),
-        modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)
-    ) {
-        items(data.vpProductByIds.size) { item ->
-            ProductItem(data.vpProductByIds[item], addToFavorites, removeFromFavorites, favorites)
-        }
-    }
-}
+import com.example.notinotest.Config
+import com.example.notinotest.R
+import com.example.notinotest.data.ProductById
+import com.example.notinotest.data.ProductId
 
 @Composable
 fun ProductItem(
-    product: VpProductById,
+    product: ProductById,
     addToFavorites: (Int) -> Unit,
     removeFromFavorites: (Int) -> Unit,
     currentFavorites: List<ProductId>
 ){
+    val isDark = isSystemInDarkTheme()
     val isFavorite = currentFavorites.find { it.id == product.productId } != null
     Column(
         verticalArrangement = Arrangement.Center,
@@ -156,6 +106,13 @@ fun ProductItem(
             val ratingBar = view as RatingBar
             ratingBar.rating = product.reviewSummary.score.toFloat()
             ratingBar.numStars = 5
+            val stars = ratingBar.progressDrawable as LayerDrawable
+            stars.getDrawable(2).setColorFilter(
+                context.resources.getColor(
+                    if (isDark) R.color.white else R.color.gray_dark
+                ),
+                PorterDuff.Mode.SRC_ATOP
+            )
             view
         }, modifier = Modifier.align(Alignment.CenterHorizontally))
         Text(
@@ -174,7 +131,7 @@ fun ProductItem(
             )
             .height(36.dp)
             .align(Alignment.CenterHorizontally)
-            .clickable {  }
+            .clickable { }
         ) {
             Text(
                 text = stringResource(R.string.to_cart),

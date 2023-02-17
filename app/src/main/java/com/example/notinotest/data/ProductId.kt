@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

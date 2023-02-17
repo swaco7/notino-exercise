@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import retrofit2.Response
 import javax.inject.Inject

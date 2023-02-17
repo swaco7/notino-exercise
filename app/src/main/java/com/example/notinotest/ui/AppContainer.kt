@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -12,6 +12,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.notinotest.R
+import com.example.notinotest.ui.screens.ProductList
 
 @Composable
 fun AppContainer(viewModel: ProductsViewModel = viewModel()) {

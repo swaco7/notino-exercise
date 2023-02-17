@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow

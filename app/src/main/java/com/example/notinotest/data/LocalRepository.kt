@@ -1,4 +1,4 @@
-package com.example.notinotest
+package com.example.notinotest.data
 
 import androidx.annotation.WorkerThread
 import kotlinx.coroutines.flow.Flow
